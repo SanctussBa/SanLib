@@ -1,0 +1,261 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<div class="form-container">
+  <div class="form-title flex-row">
+    <h1>Edit | </h1><span class="golden-title">{{ artwork_edit.title }}</span>
+  </div>
+  <form class="add-form-container" action="{{url_for('edit_all', artwork_id=artwork_edit.id)}}"  enctype="multipart/form-data" method="post">
+    <div class="add-to-favourite flex-row">
+      <label for="star">Add to Favourite</label>
+      <div>
+        {% if artwork_edit.favourite == 'True' %}
+
+          <input class="favourite-checkbox" type="checkbox" name="star" value="True" checked>
+        {% else %}
+          <input class="favourite-checkbox" type="checkbox" name="star" value="True">
+        {% endif %}
+      </div>
+
+    </div>
+
+    <div class="flex-row">
+      <label class="width-80" for="title" required>Title</label>
+      <input type="text" name="title" value="{{ artwork_edit.title }}" >
+    </div>
+
+    <div class="flex-row">
+      <label class="width-80" for="year">Year</label>
+      <input required type="number" name="year" min="1910" max="2050" value="{{artwork_edit.year}}">
+    </div>
+
+    <div class="flex-row">
+      <label class="width-80" for="category">Category</label>
+      {% if artwork_edit.category == 'series' %}
+        <select class="select-category" name="category">
+          <option value="novel">Novel/Book</option>
+          <option value="movie">Movie</option>
+          <option value="series" selected >Series</option>
+          <option value="anime">Anime/Animation</option>
+        </select>
+
+      {% elif artwork_edit.category == 'anime' %}
+        <select class="select-category" name="category">
+          <option value="novel">Novel/Book</option>
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+          <option value="anime" selected >Anime/Animation</option>
+        </select>
+
+      {% elif artwork_edit.category == 'novel' %}
+        <select class="select-category" name="category">
+          <option value="novel" selected >Novel/Book</option>
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+          <option value="anime">Anime/Animation</option>
+        </select>
+      {% elif artwork_edit.category == 'movie' %}
+        <select class="select-category" name="category">
+          <option value="novel">Novel/Book</option>
+          <option value="movie" selected >Movie</option>
+          <option value="series">Series</option>
+          <option value="anime">Anime/Animation</option>
+        </select>
+      {% else %}
+        <select class="select-category" name="category">
+          <option value="" selected disabled hidden>Choose category</option>
+          <option value="novel">Novel/Book</option>
+          <option value="movie">Movie</option>
+          <option value="series">Series</option>
+          <option value="anime">Anime/Animation</option>
+        </select>
+      {% endif %}
+    </div>
+
+    <div class="flex-row">
+      <label class="width-80" for="rating">Rating</label>
+      <input type="range" name="rating" min="0" max="10" value="{{artwork_edit.rating}}" step="1" oninput="this.nextElementSibling.value = this.value" onchange="changeColor()">
+
+      <output id="rateNumber" class="rating" name="rating" >{{artwork_edit.rating}}</output><br>
+    </div>
+
+
+    <div class="status flex-column">
+      <label for="status">Status:</label>
+      {% if artwork_edit.status == 'currently watching'%}
+        <div class="flex-row">
+          <input type="radio" name="status" value="currently watching" checked>
+          <h2 class="radio-label" for="status">Currently watching</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="completed">
+          <h2 class="radio-label" for="seen">Completed</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="planning">
+          <h2 class="radio-label"for="seen">Planning to watch</h2>
+        </div>
+      {% elif artwork_edit.status == 'completed'%}
+        <div class="flex-row">
+          <input type="radio" name="status" value="currently watching">
+          <h2 class="radio-label" for="status">Currently watching</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="completed" checked >
+          <h2 class="radio-label" for="seen">Completed</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="planning">
+          <h2 class="radio-label"for="seen">Planning to watch</h2>
+        </div>
+      {% elif artwork_edit.status == 'planning'%}
+        <div class="flex-row">
+          <input type="radio" name="status" value="currently watching">
+          <h2 class="radio-label" for="status">Currently watching</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="completed">
+          <h2 class="radio-label" for="seen">Completed</h2>
+        </div>
+        <div class="flex-row">
+          <input type="radio" name="status" value="planning" checked >
+          <h2 class="radio-label"for="seen">Planning to watch</h2>
+        </div>
+      {% endif %}
+
+
+    </div>
+
+
+    <div class="add-tag-container">
+      <div class="">
+        <label for="tag">Add tags:</label>
+        <div class="add-tag">
+          <input id="inputValue" class="new-tag-input" type="text" name="tag">
+          <input type="checkbox" checked id="hdnTag" name="hdn-tag" style="display:none;">
+          <input type="checkbox" checked id="hdnTagToRemove" name="hdn-tag-to-remove" style="display:none;">
+
+          <button class="button-plus" type="button" onclick="addTagInList(); ">+</button>
+        </div>
+      </div>
+      <div id="buttonListDiv" class="button-list-container">
+        {% if artwork_edit.tags %}
+          {% for a in artwork_edit.tags %}
+            <div id='{{a.tag[1:]}}Id' class="tag-items">
+              <p id='{{a.tag[1:]}}Id' class="p-tag">{{ a.tag }}</p>
+              <h1 id='{{a.tag[1:]}}Id' class="remove-button" onclick=" removeTag(this.id);this.parentNode.parentNode.removeChild(this.parentNode);">X</h1>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+    <div class="status">
+      <h1 for="info">Information\Description:</h1><br>
+      <textarea name="info" rows="8" cols="80" >{{artwork_edit.info}}</textarea>
+    </div>
+
+    <div class="flex-row change-img-container">
+      <div class="small-pic flex-center">
+        <img class="small-img" src="data:image/jpg;base64,{{artwork_edit.image | b64encode }}" alt="Image">
+      </div>
+      <label class="width-80 flex-center" for="image">Change image</label>
+      <input class="status choose-image-container" type="file" name="image">
+    </div>
+
+    <div class="flex-center">
+      <input type="submit" name="submit" value="Save">
+    </div>
+
+  </form>
+
+</div>
+<script type="text/javascript">
+
+  // Change color of Rating number by changing range element -->
+  function changeColor() {
+    var rateNum = document.getElementById('rateNumber');
+    var n = rateNum.value;
+    if (n <= 3) {rateNum.style.color = "red";}
+    else if (n > 7 || n === 10) {rateNum.style.color = "green";}
+    else {rateNum.style.color = "yellow";}
+
+  };
+  changeColor();
+
+  function addTagInList() {
+    // value from input field. Text.
+    var inputVal = document.getElementById('inputValue').value;
+
+    // create Main parent variable
+    var mainParent = document.getElementById("buttonListDiv");
+
+    // create new child div variable
+    var newTagDiv = document.createElement("div");
+
+    // set attribute variables to new child div
+    var divId = document.createAttribute("id");
+    var divClass = document.createAttribute("class");
+
+    divId.value = inputVal.replace(/ /g,'')+"Id";
+    divClass.value = "tag-items";
+    newTagDiv.setAttributeNode(divId);
+    newTagDiv.setAttributeNode(divClass);
+
+    // Set new p and button--------------------------------
+    var p = document.createElement('p');
+    var b = document.createElement('h1');
+
+    var pId = document.createAttribute("id");
+    var pClass = document.createAttribute("class");
+    pId.value = inputVal.replace(/ /g,'')+"Id";
+    pClass.value = "p-tag";
+    p.textContent = "#" + inputVal.replace(/ /g,'');
+    p.setAttributeNode(pId);
+    p.setAttributeNode(pClass);
+
+
+    var bId = document.createAttribute("id");
+    var bClass = document.createAttribute("class");
+    var bFunc = document.createAttribute("onclick");
+    bId.value = inputVal.replace(/ /g,'')+"Id";
+    bClass.value = "remove-button";
+    b.textContent = "X";
+    bFunc.value = "removeTag(this.id);this.parentNode.parentNode.removeChild(this.parentNode);"
+    b.setAttributeNode(bId);
+    b.setAttributeNode(bClass);
+    b.setAttributeNode(bFunc);
+
+    // Set everything in document
+    mainParent.appendChild(newTagDiv);
+    newTagDiv.appendChild(p);
+    newTagDiv.appendChild(b);
+
+    // add valu to hidden input field
+    var i = document.getElementById('hdnTag');
+    i.value = i.textContent+=p.textContent+" ";
+
+
+    // Clear Input field
+    var x = document.getElementById("inputValue");
+
+    x.value = '';
+
+    var tagDivs = document.querySelectorAll('.button-list-container');
+
+
+  }
+    // Add value to hidden tag which needs to be removed.
+  function removeTag(removedId){
+
+    var i = document.getElementById('hdnTagToRemove');
+    tagText = '#'+removedId.slice(0, -2)+' ';
+    i.value = i.textContent+=tagText;
+  }
+
+
+</script>
+
+{% endblock %}

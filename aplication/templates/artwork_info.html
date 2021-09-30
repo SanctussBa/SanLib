@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+
+<div class="info-container flex-column">
+  <div class="basic-info flex-column">
+
+    <div class="basic-info-left flex-row">
+      <div class="description-image-container flex-center">
+        <img class="artwork-img" src="data:image/jpg;base64,{{artwork_row.image | b64encode }}" alt="Image">
+      </div>
+
+
+      <div class="basic-info-right flex-column">
+        <div class="basic-info-right-title flex-row">
+          <div class="rating-frame info-rating-frame">
+            <div class="rating-number">
+              {% if artwork_row.rating <= 3 %}
+                <a href="{{url_for('rated', artwork_rate=artwork_row.rating)}}"><h2 class="rating red">{{ artwork_row.rating }}</h2></a>
+              {% elif artwork_row.rating > 3 and artwork_row.rating <= 7 %}
+                <a href="{{url_for('rated', artwork_rate=artwork_row.rating)}}" ><h2 class="rating yellow">{{ artwork_row.rating }}</h2></a>
+              {% else %}
+                <a href="{{url_for('rated', artwork_rate=artwork_row.rating)}}"><h2 class="rating green">{{ artwork_row.rating }}</h2></a>
+              {% endif %}
+
+              <div class="rating-slash-ten">
+                <h2 class="m-r" id="max-rate">/10</h2>
+              </div>
+            </div>
+
+          </div>
+          <div class="title flex-center ">
+            <h1 class="max-content">{{ artwork_row.title }}</h1>
+          </div>
+
+          <div class="edit-delete-container">
+            <div class="options flex-center flex-column">
+              <div class="edit-button flex-center">
+                <a class="edit flex-center" href="{{url_for('edit_artwork', artwork_id=artwork_row.id)}}"><h1 class="edit">Edit</h1></a>
+              </div>
+              <div class="edit-button flex-center">
+                <a class="delete flex-center" href="{{url_for('delete_artwork', artwork_id=artwork_row.id)}}"><h1 class="delete">Delete</h1></a>
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+        <div class="info-year flex-row">
+          <h1 class="sub-text">Year:</h1>
+          <a class="flex-center" href="{{url_for('year', artwork_year=artwork_row.year)}}"><h3 class="year flex-center" title="Check other artworks from year {{ artwork_row.year }}.">{{ artwork_row.year }}</h3></a>
+
+        </div>
+
+        <div class="info-category flex-row">
+          <h1 class="sub-text">Category:</h1>
+          <a  class="info-a flex-center" href="{{url_for('category', artwork_category=artwork_row.category)}}"><h3 class="category flex-center" title="Check other artworks from category: {{ artwork_row.category }}.">{{ artwork_row.category }}</h3></a>
+        </div>
+
+        <div class="info-status flex-row">
+          <h1 class="sub-text">Status:</h1>
+          {% if artwork_row.status == 'completed' %}
+            <a class="flex-center" href="{{url_for('status', artwork_status=artwork_row.status)}}" title="Check my other already seen artworks"><h3 class="green flex-center">Completed</h3></a>
+          {% elif artwork_row.status == 'currently watching' %}
+            <a href="{{url_for('status', artwork_status=artwork_row.status)}}"title="List of my other curently watching artworks"><h3 class="yellow flex-center">Curently watching</h3></a>
+          {% else %}
+            <a  class="flex-center"href="{{url_for('status', artwork_status=artwork_row.status)}}" title="Check my other planing to see artworks"><h3 class="red flex-center">Planning to watch</h3></a>
+          {% endif %}
+        </div>
+
+        <div class="info-tag flex-row">
+          <h1 class="sub-text">Tags:</h1>
+          {% for t in artwork_tags %}
+            <a class="flex-center" href="{{url_for('only_tag', artwork_tag = t.tag )}}"><h3 class="year">{{ t.tag }}</h3></a>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="description">
+      <h1 class="description-title">Description</h1>
+      <p class="description-text">{{ artwork_row.info}}</p>
+    </div>
+
+  </div>
+
+  <div class="comment-container">
+    <h1 class="comment-title">Comments</h1>
+    <div class="comment-section">
+
+      <form class="comment-section-form flex-row" action="{{url_for('add_comment')}}" method="post">
+        <div class="highlight-and-comment-container flex-column">
+          <input type="text" name="highlight" class="highlight-of-comment" value="" placeholder="Title of the comment here...">
+          <textarea class="comment-textarea" name="comment" rows="3" cols="" placeholder="Comment here..."></textarea>
+          <input type="hidden" name="art_id" value="{{ artwork_row.id }}">
+        </div>
+        <div class="submit-container">
+          <input class="comment-submit" type="submit" name="" value="Comment">
+        </div>
+      </form>
+
+    </div>
+    <div class="all-comments">
+      {% for comments in artwork_comments %}
+        <div class="comment-unit-section">
+          <div class="comment-highlight-container">
+            <h3 class="c-h-l">{{ comments.comment_highlight}}</h3>
+          </div>
+          <div class="posted-comment-container flex-row">
+            <div>
+              <p class="comment-p">{{ comments.comment }}</p>
+            </div>
+            <div class="remove-button">
+              <a class="remove-a" href="{{url_for('remove_comment', comment_id=comments.id)}}"><h1 class="remove">Delete</h1></a>
+            </div>
+          </div>
+        </div>
+
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

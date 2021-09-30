@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width" initial-scale=1> -->
+    <meta name="author:" content="Santa Baltmane">
+    <link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='artwork_card.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='artwork_info.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='add.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='favourite.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='footer.css')}}">
+<!-- --------GOOGLE FONT LINKS--------- -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind&family=Teko:wght@300&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{url_for('static', filename='pics/icon1.png')}}">
+    <title>SLib</title>
+  </head>
+  <body>
+    <!-- --------------------------------------HEADER start------------ -->
+    <header>
+      <nav>
+        {% include 'navigation.html' %}
+      </nav>
+    </header>
+    <!-- --------------------------------------HEADER end------------ -->
+
+
+    <main>
+      {% block content %}
+      {% endblock %}
+    </main>
+
+
+    <!-- --------------------------------------FOOTER start------------ -->
+    <footer>
+
+      {% include 'footer.html' %}
+
+    </footer>
+    <!-- --------------------------------------FOOTER end------------ -->
+  </body>
+</html>

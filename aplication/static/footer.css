@@ -1,0 +1,35 @@
+footer {
+  width: 100%;
+
+}
+
+.footer-wrapper {
+  display: block;
+  height: 80px;
+  width: 100%;
+  backdrop-filter: blur(2px);
+  border-top: solid 2px rgb(110, 110, 110);
+
+}
+
+.parts-footers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 10px;
+}
+
+span.size-small {
+  font-size: 8px;
+}
+span.size-medium {
+  font-size: 10px;
+}
+span.size-large {
+  font-size: 12px;
+}
+.pd {
+  padding-left: 5px;
+  padding-right: 5px;
+}

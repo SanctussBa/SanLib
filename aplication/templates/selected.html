@@ -1,0 +1,79 @@
+
+{% extends "layout.html" %}
+
+
+{% block content %}
+
+<section class="main-section">
+  <div>
+    <div>
+      <h1>{{title}}</h1>
+      <div class="flex-row">
+        <p>Total of {{total}} artworks</p>
+      </div>
+    </div>
+
+    <div class="latest-artwork-section">
+      {% for x in artwork %}
+
+      <div class="artwork-frame">
+        <div class="artwork-rating">
+          <div class="artwork-top">
+            <div class="title-container">
+              <a class="a-title nav-link line-height-1px" title="{{ x.title }}" href="{{url_for('artwork_info', artwork_id=x.id)}}">{{ x.title | shorter_title }}</a>
+            </div>
+            <div class="rating-frame">
+              <div class="rating-number">
+                {% if x.rating <= 3 %}
+                  <a href="{{url_for('rated', artwork_rate=x.rating)}}"><h2 class="rating red">{{ x.rating }}</h2></a>
+                {% elif x.rating > 3 and x.rating <= 7 %}
+                  <a class="rating" href="{{url_for('rated', artwork_rate=x.rating)}}" ><h2 class="rating yellow">{{ x.rating }}</h2></a>
+                {% else %}
+                  <a class="rating" href="{{url_for('rated', artwork_rate=x.rating)}}"><h2 class="rating green">{{ x.rating }}</h2></a>
+                {% endif %}
+
+              </div>
+              <div class="rating-slash-ten">
+                <h2 id="max-rate">/10</h2>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="artwork-image">
+          <div class="image-container">
+            <a class="a-title nav-link line-height-1px" title="{{ x.title }}" href="{{url_for('artwork_info', artwork_id=x.id)}}"><img class="artwork-img" src="data:image/jpg;base64,{{x.image | b64encode }}" alt="Image"></a>
+
+          </div>
+        </div>
+
+
+        <div class="artwork-year-container flex-center">
+          <div class="seen-logo">
+            {% if x.status == 'completed' %}
+              <a href="{{url_for('status', artwork_status=x.status)}}"title="Check my other already seen artworks"><h3 class="green flex-center">Completed</h3></a>
+            {% elif x.status == 'currently watching' %}
+              <a href="{{url_for('status', artwork_status=x.status)}}"title="List of my other curently watching artworks"><h3 class="yellow flex-center">Curently watching</h3></a>
+            {% else %}
+              <a href="{{url_for('status', artwork_status=x.status)}}"title="Check my other planing to see artworks"><h3 class="red flex-center">Planning to watch</h3></a>
+            {% endif %}
+          </div>
+          <div class="year flex-center">
+            <a href="{{url_for('year', artwork_year=x.year)}}"><h3 class="year flex-center" title="Check other artworks from year {{ x.year }}.">{{ x.year }}</h3></a>
+          </div>
+          <div class="category flex-center">
+            <a href="{{url_for('category', artwork_category=x.category)}}"><h3 class="category flex-center" title="Check other artworks from category: {{ x.category }}.">{{ x.category }}</h3></a>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</section>
+
+
+{% endblock %}
