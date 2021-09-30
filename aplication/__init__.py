@@ -10,11 +10,16 @@ app = Flask(__name__)
 
 # -------------------------- app and database configuration-----------------
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['DEBUG'] = False
-# app.config['SECRET_KEY'] = 'secret'
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data'
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
+ENV = ''
+if ENV == 'dev':
+    app.debug = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:berzone@localhost/Artwork'
+else:
+    app.debug = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -397,3 +402,8 @@ def search():
             return redirect(url_for('home'))
 
     return redirect(url_for('home'))
+
+
+
+if __name__ == '__main__':
+    app.run()
