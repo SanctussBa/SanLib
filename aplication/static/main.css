@@ -278,11 +278,15 @@ i {
   .about-page-container {
     height: fit-content;
   }
+  .basic-info, .comment-container {
+    padding: 5px;
+    width: 100%;
+  }
   .basic-info {
-    padding: 0;
+    justify-content: center;
   }
   .basic-info-right {
-    width: 100%;
+    width: fit-content;
     padding-left: 10px;
     margin-bottom: 10px;
   }
@@ -295,16 +299,14 @@ i {
   }
   .description-image-container {
     width: fit-content;
-    margin: 10px;
+    margin-right: auto;
+    margin-left: auto;
   }
-  .comment-container {
-    padding: 5px;
-    width: 100%;
-  }
+
   .comment-section-form {
     flex-direction: column;
   }
   .info-container {
-    min-width: fit-content;
+    min-width: auto;
   }
 }
