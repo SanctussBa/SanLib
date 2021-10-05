@@ -247,7 +247,7 @@ i {
 
 @media only screen and (max-device-width: 850px){
   main {
-    max-width: auto;
+    max-width: 100%;
     margin: 5px;
   }
   section, nav, .info-container {
@@ -259,10 +259,23 @@ i {
   ul.ul-li {
     flex-direction: column;
   }
+  ul.ul-li li {
+    width: 100%;
+    border-bottom: 1px solid rgba(143, 143, 143, 0.5);
+  }
   .nav-left {
     margin-left: auto;
   }
   .nav-container {
     padding: 0;
+  }
+  .form-container {
+    min-width: 100%;
+  }
+  .status {
+    width: 100%;
+  }
+  .about-page-container {
+    height: fit-content;
   }
 }
