@@ -222,7 +222,7 @@ i {
 
 #search-button:hover {
   background-color: rgba(208, 208, 208, 0.5);
-
+  border: none;
 }
 
 .search-container {
@@ -238,4 +238,8 @@ i {
   align-items: center;
   color: rgb(255, 174, 134);
   font-family: monospace;
+}
+
+.title-container {
+  padding: 3px;
 }

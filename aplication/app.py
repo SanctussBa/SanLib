@@ -390,13 +390,13 @@ def about():
 def search():
     if request.method == 'POST':
         ttl = request.form.get('titleSearchBar')
-
         if ttl != '':
-            ttl = ttl.capitalize()
+            search_word = f"%{ttl}%"
+            artwork = Artwork.query.filter(Artwork.title.ilike(search_word)).all()
+            title = f"All artworks with '{ttl}' in the title."
 
-        artwork = Artwork.query.filter(Artwork.title==ttl).first()
-        if artwork is not None:
-            return redirect(url_for('artwork_info', artwork_id=artwork.id))
+            total = Artwork.query.filter(Artwork.title.ilike(search_word)).count()
+            return render_template('selected.html', artwork=artwork, title=title, total=total)
         else:
             flash(f'Artwork with title "{ttl}" does not exist, try to search again!')
             return redirect(url_for('home'))
