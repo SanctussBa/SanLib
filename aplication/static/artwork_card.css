@@ -213,9 +213,11 @@ h3.red:hover {
   border: solid 1px rgb(231, 139, 127);
 }
 h3.year {
-  font-size: 14px;
+  font-size: 16px;
 }
-
+h3.category {
+  font-size: 0.8rem;
+}
 h3.year:hover, h3.category:hover {
   color: white;
   text-shadow: 0px 0px 3px white;

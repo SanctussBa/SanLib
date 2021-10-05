@@ -214,7 +214,6 @@ i {
   font-size: 12px;
   color: white;
   background-color: rgba(208, 208, 208, 0.1);
-  border: solid 1px rgb(100, 100, 100);
   padding: 5px;
   transition: ease-in-out 0.3s;
   font-family: monospace;
@@ -222,7 +221,7 @@ i {
 
 #search-button:hover {
   background-color: rgba(208, 208, 208, 0.5);
-  border: none;
+  
 }
 
 .search-container {
@@ -242,4 +241,19 @@ i {
 
 .title-container {
   padding: 3px;
+}
+
+/* Adding media queries */
+
+@media only screen and (max-device-width: 850px){
+  main {
+    max-width: auto;
+    margin: 20px;
+  }
+  section, nav, .info-container {
+    min-width: auto;
+  }
+  svg {
+    height: 50px;
+  }
 }
