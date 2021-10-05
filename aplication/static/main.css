@@ -221,7 +221,7 @@ i {
 
 #search-button:hover {
   background-color: rgba(208, 208, 208, 0.5);
-  
+
 }
 
 .search-container {
@@ -248,12 +248,21 @@ i {
 @media only screen and (max-device-width: 850px){
   main {
     max-width: auto;
-    margin: 20px;
+    margin: 5px;
   }
   section, nav, .info-container {
     min-width: auto;
   }
   svg {
     height: 50px;
+  }
+  ul.ul-li {
+    flex-direction: column;
+  }
+  .nav-left {
+    margin-left: auto;
+  }
+  .nav-container {
+    padding: 0;
   }
 }
